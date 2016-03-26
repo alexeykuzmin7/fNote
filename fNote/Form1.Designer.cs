@@ -32,6 +32,7 @@
             this.baseCreate = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.listBox1 = new System.Windows.Forms.ListBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // baseSelect
@@ -69,17 +70,28 @@
             this.listBox1.Size = new System.Drawing.Size(267, 342);
             this.listBox1.TabIndex = 4;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(317, 12);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(33, 23);
+            this.button1.TabIndex = 5;
+            this.button1.Text = "OK";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(791, 370);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.baseCreate);
             this.Controls.Add(this.baseSelect);
             this.Name = "mainForm";
             this.Text = "fNote";
+            this.Load += new System.EventHandler(this.mainForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,6 +103,7 @@
         private System.Windows.Forms.Button baseCreate;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

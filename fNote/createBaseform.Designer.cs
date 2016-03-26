@@ -48,7 +48,7 @@
             this.baseName.Name = "baseName";
             this.baseName.Size = new System.Drawing.Size(187, 20);
             this.baseName.TabIndex = 1;
-            this.baseName.Text = "hghg";
+            this.baseName.Text = "Название базы";
             this.baseName.Click += new System.EventHandler(this.baseName_Click);
             // 
             // createBaseform
