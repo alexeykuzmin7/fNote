@@ -22,7 +22,6 @@ namespace fNote
         bool textDirty = false;
         long lastId = -1;
         bool doingRefresh = false;
-        bool click1 = false;
         public mainForm()
         {
             InitializeComponent();
@@ -72,39 +71,31 @@ namespace fNote
             ds = new DataSet();
             SQLiteDataAdapter adapter = new SQLiteDataAdapter("SELECT * FROM notes", m_dbConnection);
             adapter.Fill(ds);
-            this.listBox1.DataSource = ds.Tables[0];
-            this.listBox1.DisplayMember = "name";
+            this.baseElements.DataSource = ds.Tables[0];
+            this.baseElements.DisplayMember = "name";
             doingRefresh = false;
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void baseElements_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (doingRefresh)
                 return;
             try
             {
-                if (textDirty && click1 == false)
+                if (textDirty)
                 {
                     DialogResult dialogResult = MessageBox.Show("Сохранить изменения?", "", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        SQLiteCommand command = new SQLiteCommand();
-                        command.CommandText = "UPDATE notes SET name='" + textBox2.Text + "', note='" + textBox1.Text + "' WHERE id=" + lastId;
-                        command.Connection = m_dbConnection;
-                        command.ExecuteNonQuery();
-
-                        refresh();     
-
-                        MessageBox.Show("Сохранено");
+                        save();
                     }
                 }
             
-                textBox1.Text = ds.Tables[0].Rows[listBox1.SelectedIndex].Field<string>("note");
-                textBox2.Text = ds.Tables[0].Rows[listBox1.SelectedIndex].Field<string>("name");
-                label1.Text = ds.Tables[0].Rows[listBox1.SelectedIndex].Field<long>("id").ToString();
-                click1 = false;
+                bENote.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("note");
+                bEName.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("name");
+                bEId.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id").ToString();
                 textDirty = false;
-                lastId = ds.Tables[0].Rows[listBox1.SelectedIndex].Field<long>("id");
+                lastId = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id");
             }
             catch (Exception ex)
             {
@@ -112,18 +103,23 @@ namespace fNote
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void save()
+        {
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "' WHERE id=" + lastId;
+            command.Connection = m_dbConnection;
+            command.ExecuteNonQuery();
+
+            refresh();     
+
+            MessageBox.Show("Сохранено");
+        }
+
+        private void saveChanges_Click(object sender, EventArgs e)
         {
             try
             {
-                SQLiteCommand command = new SQLiteCommand();
-                command.CommandText = "UPDATE notes SET name='" + textBox2.Text + "', note='" + textBox1.Text + "' WHERE id=" + ds.Tables[0].Rows[listBox1.SelectedIndex].Field<long>("id");
-                command.Connection = m_dbConnection;
-                command.ExecuteNonQuery();
-                click1 = true;
-                refresh();
-                
-                MessageBox.Show("Сохранено");
+                save();
             }
             catch (Exception ex)
             {
@@ -131,14 +127,25 @@ namespace fNote
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void bENote_TextChanged(object sender, EventArgs e)
         {
             textDirty = true;
         }
 
-        private void textBox2_TextChanged(object sender, EventArgs e)
+        private void bEName_TextChanged(object sender, EventArgs e)
         {
             textDirty = true;
+        }
+
+        private void addElement_Click(object sender, EventArgs e)
+        {
+            new addItem(this).Show();
+        }
+
+        public void NewItem(string name, string note)
+        {
+            MessageBox.Show(name + note);
+            refresh();
         }
     }
 }
