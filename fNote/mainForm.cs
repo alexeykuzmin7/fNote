@@ -22,18 +22,16 @@ namespace fNote
         bool textDirty = false;
         long lastId = -1;
         bool doingRefresh = false;
+        
         public mainForm()
         {
             InitializeComponent();
+            
         }
 
         private void baseCreate_Click(object sender, EventArgs e)
         {
             new createBaseform().Show();
-            //string databaseName = "newbase.db";
-            //SQLiteConnection.CreateFile(databaseName);
-            //Console.WriteLine(File.Exists(databaseName) ? "База данных создана" : "Возникла ошиюка при создании базы данных");
-            //Console.ReadKey(true);
         }
 
         private void mainForm_Load(object sender, EventArgs e)
@@ -65,7 +63,7 @@ namespace fNote
             }
         }
 
-        private void refresh()
+        public void refresh()
         {
             doingRefresh = true;
             ds = new DataSet();
@@ -117,14 +115,7 @@ namespace fNote
 
         private void saveChanges_Click(object sender, EventArgs e)
         {
-            try
-            {
-                save();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Error" + ex);
-            }
+            save();
         }
 
         private void bENote_TextChanged(object sender, EventArgs e)
@@ -142,10 +133,16 @@ namespace fNote
             new addItem(this).Show();
         }
 
-        public void NewItem(string name, string note)
+        private void deleteElement_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(name + note);
+            SQLiteCommand command = new SQLiteCommand();
+            command.CommandText = "DELETE FROM notes WHERE name=" + ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("name");
+            command.Connection = m_dbConnection;
+            command.ExecuteNonQuery();
+
             refresh();
+
+            MessageBox.Show("Удалено");
         }
     }
 }
