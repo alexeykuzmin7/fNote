@@ -144,5 +144,11 @@ namespace fNote
 
             MessageBox.Show("Удалено");
         }
+
+        private void filterBox_TextChanged(object sender, EventArgs e)
+        {
+            DataTable dt = (DataTable)baseElements.DataSource;
+            dt.DefaultView.RowFilter = "name LIKE '%" + filterBox.Text + "%'";
+        }
     }
 }
