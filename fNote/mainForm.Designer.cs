@@ -37,9 +37,9 @@
             this.bEName = new System.Windows.Forms.TextBox();
             this.addElement = new System.Windows.Forms.Button();
             this.deleteElement = new System.Windows.Forms.Button();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.filterBox = new System.Windows.Forms.TextBox();
             this.filter = new System.Windows.Forms.Label();
+            this.openBase = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // baseSelect
@@ -50,6 +50,7 @@
             this.baseSelect.TabIndex = 1;
             this.baseSelect.Text = "Выбрать базу";
             this.baseSelect.UseVisualStyleBackColor = true;
+            this.baseSelect.Click += new System.EventHandler(this.baseSelect_Click);
             // 
             // baseCreate
             // 
@@ -66,6 +67,7 @@
             this.bENote.Location = new System.Drawing.Point(12, 41);
             this.bENote.Multiline = true;
             this.bENote.Name = "bENote";
+            this.bENote.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.bENote.Size = new System.Drawing.Size(341, 313);
             this.bENote.TabIndex = 3;
             this.bENote.TextChanged += new System.EventHandler(this.bENote_TextChanged);
@@ -75,7 +77,7 @@
             this.baseElements.FormattingEnabled = true;
             this.baseElements.Location = new System.Drawing.Point(409, 12);
             this.baseElements.Name = "baseElements";
-            this.baseElements.Size = new System.Drawing.Size(259, 342);
+            this.baseElements.Size = new System.Drawing.Size(276, 342);
             this.baseElements.TabIndex = 4;
             this.baseElements.SelectedIndexChanged += new System.EventHandler(this.baseElements_SelectedIndexChanged);
             // 
@@ -125,19 +127,13 @@
             this.deleteElement.UseVisualStyleBackColor = true;
             this.deleteElement.Click += new System.EventHandler(this.deleteElement_Click);
             // 
-            // vScrollBar1
+            // filterBox
             // 
-            this.vScrollBar1.Location = new System.Drawing.Point(671, 13);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 341);
-            this.vScrollBar1.TabIndex = 11;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(694, 85);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(88, 20);
-            this.textBox1.TabIndex = 13;
+            this.filterBox.Location = new System.Drawing.Point(694, 85);
+            this.filterBox.Name = "filterBox";
+            this.filterBox.Size = new System.Drawing.Size(88, 20);
+            this.filterBox.TabIndex = 13;
+            this.filterBox.TextChanged += new System.EventHandler(this.filterBox_TextChanged);
             // 
             // filter
             // 
@@ -154,8 +150,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(791, 370);
             this.Controls.Add(this.filter);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.vScrollBar1);
+            this.Controls.Add(this.filterBox);
             this.Controls.Add(this.deleteElement);
             this.Controls.Add(this.addElement);
             this.Controls.Add(this.bEName);
@@ -184,9 +179,9 @@
         private System.Windows.Forms.TextBox bEName;
         private System.Windows.Forms.Button addElement;
         private System.Windows.Forms.Button deleteElement;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox filterBox;
         private System.Windows.Forms.Label filter;
+        private System.Windows.Forms.OpenFileDialog openBase;
     }
 }
 

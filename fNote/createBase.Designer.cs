@@ -1,6 +1,6 @@
 ﻿namespace fNote
 {
-    partial class createBaseform
+    partial class createBase
     {
         /// <summary>
         /// Required designer variable.
@@ -28,19 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.createBase = new System.Windows.Forms.Button();
             this.baseName = new System.Windows.Forms.TextBox();
+            this.create = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // createBase
-            // 
-            this.createBase.Location = new System.Drawing.Point(65, 63);
-            this.createBase.Name = "createBase";
-            this.createBase.Size = new System.Drawing.Size(75, 23);
-            this.createBase.TabIndex = 0;
-            this.createBase.Text = "Создать";
-            this.createBase.UseVisualStyleBackColor = true;
-            this.createBase.Click += new System.EventHandler(this.createBase_Click);
             // 
             // baseName
             // 
@@ -51,14 +41,24 @@
             this.baseName.Text = "Название базы";
             this.baseName.Click += new System.EventHandler(this.baseName_Click);
             // 
-            // createBaseform
+            // create
+            // 
+            this.create.Location = new System.Drawing.Point(64, 61);
+            this.create.Name = "create";
+            this.create.Size = new System.Drawing.Size(75, 23);
+            this.create.TabIndex = 2;
+            this.create.Text = "Создать";
+            this.create.UseVisualStyleBackColor = true;
+            this.create.Click += new System.EventHandler(this.create_Click);
+            // 
+            // createBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(211, 107);
+            this.Controls.Add(this.create);
             this.Controls.Add(this.baseName);
-            this.Controls.Add(this.createBase);
-            this.Name = "createBaseform";
+            this.Name = "createBase";
             this.Text = "Создать базу";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -67,7 +67,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button createBase;
+
         public System.Windows.Forms.TextBox baseName;
+        private System.Windows.Forms.Button create;
     }
 }

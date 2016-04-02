@@ -44,9 +44,9 @@
             // 
             // bEName
             // 
-            this.bEName.Location = new System.Drawing.Point(55, 13);
+            this.bEName.Location = new System.Drawing.Point(44, 13);
             this.bEName.Name = "bEName";
-            this.bEName.Size = new System.Drawing.Size(192, 20);
+            this.bEName.Size = new System.Drawing.Size(203, 20);
             this.bEName.TabIndex = 1;
             // 
             // bENote
@@ -56,6 +56,7 @@
             this.bENote.Name = "bENote";
             this.bENote.Size = new System.Drawing.Size(256, 188);
             this.bENote.TabIndex = 2;
+            //this.bENote.TextChanged += new System.EventHandler(this.bENote_TextChanged);
             // 
             // saveButton
             // 
