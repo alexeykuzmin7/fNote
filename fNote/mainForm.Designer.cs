@@ -39,6 +39,7 @@
             this.deleteElement = new System.Windows.Forms.Button();
             this.filterBox = new System.Windows.Forms.TextBox();
             this.filter = new System.Windows.Forms.Label();
+            this.openBase = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
             // baseSelect
@@ -49,6 +50,7 @@
             this.baseSelect.TabIndex = 1;
             this.baseSelect.Text = "Выбрать базу";
             this.baseSelect.UseVisualStyleBackColor = true;
+            this.baseSelect.Click += new System.EventHandler(this.baseSelect_Click);
             // 
             // baseCreate
             // 
@@ -179,6 +181,7 @@
         private System.Windows.Forms.Button deleteElement;
         private System.Windows.Forms.TextBox filterBox;
         private System.Windows.Forms.Label filter;
+        private System.Windows.Forms.OpenFileDialog openBase;
     }
 }
 
