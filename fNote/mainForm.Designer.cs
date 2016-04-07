@@ -40,6 +40,10 @@
             this.filterBox = new System.Windows.Forms.TextBox();
             this.filter = new System.Windows.Forms.Label();
             this.openBase = new System.Windows.Forms.OpenFileDialog();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.notificationLabel = new System.Windows.Forms.Label();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // baseSelect
@@ -68,16 +72,16 @@
             this.bENote.Multiline = true;
             this.bENote.Name = "bENote";
             this.bENote.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.bENote.Size = new System.Drawing.Size(341, 313);
+            this.bENote.Size = new System.Drawing.Size(341, 288);
             this.bENote.TabIndex = 3;
             this.bENote.TextChanged += new System.EventHandler(this.bENote_TextChanged);
             // 
             // baseElements
             // 
             this.baseElements.FormattingEnabled = true;
-            this.baseElements.Location = new System.Drawing.Point(409, 12);
+            this.baseElements.Location = new System.Drawing.Point(409, 25);
             this.baseElements.Name = "baseElements";
-            this.baseElements.Size = new System.Drawing.Size(276, 342);
+            this.baseElements.Size = new System.Drawing.Size(276, 329);
             this.baseElements.TabIndex = 4;
             this.baseElements.SelectedIndexChanged += new System.EventHandler(this.baseElements_SelectedIndexChanged);
             // 
@@ -144,11 +148,49 @@
             this.filter.TabIndex = 14;
             this.filter.Text = "Фильтр";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(409, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(92, 13);
+            this.label1.TabIndex = 15;
+            this.label1.Text = "Список записей:";
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(120, 338);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker1.TabIndex = 16;
+            // 
+            // notificationLabel
+            // 
+            this.notificationLabel.AutoSize = true;
+            this.notificationLabel.Location = new System.Drawing.Point(13, 340);
+            this.notificationLabel.Name = "notificationLabel";
+            this.notificationLabel.Size = new System.Drawing.Size(80, 13);
+            this.notificationLabel.TabIndex = 17;
+            this.notificationLabel.Text = "Напоминание:";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(99, 340);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(15, 14);
+            this.checkBox1.TabIndex = 18;
+            this.checkBox1.UseVisualStyleBackColor = true;
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(791, 370);
+            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.notificationLabel);
+            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.filter);
             this.Controls.Add(this.filterBox);
             this.Controls.Add(this.deleteElement);
@@ -182,6 +224,10 @@
         private System.Windows.Forms.TextBox filterBox;
         private System.Windows.Forms.Label filter;
         private System.Windows.Forms.OpenFileDialog openBase;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.Label notificationLabel;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }
 

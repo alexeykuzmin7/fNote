@@ -74,7 +74,7 @@ namespace fNote
             baseName.Text = "";
         }
 
-        private void create_Click(object sender, EventArgs e)
+        public void create_Click(object sender, EventArgs e)
         {
             //bool databaseExists = System.IO.File.Exists("bases\\" + baseName.Text + ".db");
             if (regex.IsMatch(baseName.Text, 0) == true)
@@ -108,6 +108,7 @@ namespace fNote
                     mainForm.m_dbConnection.Open();
                     mainForm.refresh();
                     ConfigurationManager.AppSettings["lastBase"] = filename;
+                    mainForm.connectionOpened = true;
                 }
 
                 Close();

@@ -23,6 +23,11 @@ namespace fNote
         bool textDirty = false;
         long lastId = -1;
         bool doingRefresh = false;
+        bool doingFilter = false;
+        int checkSelect = -1;
+        public bool connectionOpened = false;
+        System.IO.StreamReader sr;
+        
         public mainForm()
         {
             InitializeComponent();
@@ -80,6 +85,7 @@ namespace fNote
             ds = new DataSet();
             SQLiteDataAdapter adapter = new SQLiteDataAdapter("SELECT * FROM notes", m_dbConnection);
             adapter.Fill(ds);
+            adapter.Dispose();
             this.baseElements.DataSource = ds.Tables[0];
             this.baseElements.DisplayMember = "name";
             doingRefresh = false;
@@ -91,7 +97,7 @@ namespace fNote
                 return;
             try
             {
-                if (textDirty)
+                if (textDirty && !doingFilter)
                 {
                     DialogResult dialogResult = MessageBox.Show("Сохранить изменения?", "", MessageBoxButtons.YesNo);
                     if (dialogResult == DialogResult.Yes)
@@ -99,12 +105,14 @@ namespace fNote
                         save();
                     }
                 }
-            
-                bENote.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("note");
-                bEName.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("name");
-                bEId.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id").ToString();
+                if (!doingFilter)
+                {
+                    bENote.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("note");
+                    bEName.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("name");
+                    bEId.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id").ToString();
+                    lastId = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id");
+                }
                 textDirty = false;
-                lastId = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id");
             }
             catch (Exception ex)
             {
@@ -114,14 +122,30 @@ namespace fNote
 
         private void save()
         {
-            SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "' WHERE id=" + lastId;
-            command.Connection = m_dbConnection;
-            command.ExecuteNonQuery();
+            if(bEId.Text == "")
+            {
+                MessageBox.Show("Выберите запись из списка или создайте новую");
+            }
+            else if(bEName.Text == "")
+            {
+                MessageBox.Show("Введите имя записи");
+            }
+            else if(bENote.Text == "")
+            {
+                MessageBox.Show("Введите запись");
+            }
+            else if (bEName.Text != "" && bENote.Text != "")
+            {
 
-            refresh();     
+                SQLiteCommand command = new SQLiteCommand();
+                command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "' WHERE id=" + lastId;
+                command.Connection = m_dbConnection;
+                command.ExecuteNonQuery();
 
-            MessageBox.Show("Сохранено");
+                refresh();
+
+                MessageBox.Show("Сохранено");
+            }
         }
 
         private void saveChanges_Click(object sender, EventArgs e)
@@ -146,36 +170,51 @@ namespace fNote
 
         private void deleteElement_Click(object sender, EventArgs e)
         {
-            SQLiteCommand command = new SQLiteCommand();
-            command.CommandText = "DELETE FROM notes WHERE name=" + ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("name");
-            command.Connection = m_dbConnection;
-            command.ExecuteNonQuery();
+            checkSelect = baseElements.SelectedIndex;
+            if (checkSelect > 0)
+            {
+                SQLiteCommand command = new SQLiteCommand();
+                command.CommandText = "DELETE FROM notes WHERE id=" + ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id");
+                command.Connection = m_dbConnection;
+                command.ExecuteNonQuery();
 
-            refresh();
+                refresh();
 
-            MessageBox.Show("Удалено");
+                MessageBox.Show("Удалено");
+            }
+            else
+            {
+                MessageBox.Show("Выберите запись из списка");
+            }
         }
-
         private void filterBox_TextChanged(object sender, EventArgs e)
         {
-            DataTable dt = (DataTable)baseElements.DataSource;
-            dt.DefaultView.RowFilter = "name LIKE '%" + filterBox.Text + "%'";
+            doingFilter = true;
+            ds.Tables[0].DefaultView.RowFilter = "name LIKE '%" + filterBox.Text + "%'";
+            doingFilter = false;
         }
 
-        private void baseSelect_Click(object sender, EventArgs e)
+        public void baseSelect_Click(object sender, EventArgs e)
         {
             openBase.Filter = "Data Base (.db)|*.db";
             openBase.FilterIndex = 1;
             openBase.Multiselect = false;
             if (openBase.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                System.IO.StreamReader sr = new System.IO.StreamReader(openBase.FileName);
-                MessageBox.Show(sr.ReadToEnd());
+                if (connectionOpened == true)
+                {
+                    m_dbConnection.Close();
+                    System.Data.SQLite.SQLiteConnection.ClearAllPools();
+                    GC.Collect();
+                }
+                sr = new System.IO.StreamReader(openBase.FileName);
+                //MessageBox.Show(sr.ReadToEnd());
                 sr.Close();
-                //m_dbConnection.Close();
                 m_dbConnection = new SQLiteConnection("Data Source=" + openBase.FileName + "; Version=3;");
                 m_dbConnection.Open();
                 refresh();
+                ConfigurationManager.AppSettings["lastBase"] = openBase.FileName;
+                connectionOpened = true;
             }
         }
     }
