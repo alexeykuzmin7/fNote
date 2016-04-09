@@ -27,11 +27,15 @@ namespace fNote
         int checkSelect = -1;
         public bool connectionOpened = false;
         System.IO.StreamReader sr;
+        int checkStatus = 0;
+        string date = "";
+        string time = "";
         
         public mainForm()
         {
             InitializeComponent();
-            
+            dateTimePicker.Format = DateTimePickerFormat.Custom;
+            dateTimePicker.CustomFormat = "dd/MM/yyyy HH:mm";
         }
 
         private void baseCreate_Click(object sender, EventArgs e)
@@ -111,6 +115,14 @@ namespace fNote
                     bEName.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("name");
                     bEId.Text = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id").ToString();
                     lastId = ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id");
+                    if (ds.Tables[0].Rows[baseElements.SelectedIndex].Field<int>("notification") == 1)
+                    {
+                        reminderActivator.Checked = true;
+                    }
+                    else
+                    {
+                        reminderActivator.Checked = false;
+                    }
                 }
                 textDirty = false;
             }
@@ -136,9 +148,20 @@ namespace fNote
             }
             else if (bEName.Text != "" && bENote.Text != "")
             {
-
+                if(reminderActivator.Checked == true)
+                {
+                    checkStatus = 1;
+                    date = dateTimePicker.Value.Day.ToString() + "-" + dateTimePicker.Value.Month.ToString() + "-" + dateTimePicker.Value.Year.ToString();
+                    time = dateTimePicker.Value.Hour.ToString() + ":" + dateTimePicker.Value.Minute.ToString();
+                }
+                else
+                {
+                    checkStatus = 0;
+                    date = dateTimePicker.Value.Day.ToString() + "-" + dateTimePicker.Value.Month.ToString() + "-" + dateTimePicker.Value.Year.ToString();
+                    time = dateTimePicker.Value.Hour.ToString() + ":" + dateTimePicker.Value.Minute.ToString();
+                }
                 SQLiteCommand command = new SQLiteCommand();
-                command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "' WHERE id=" + lastId;
+                command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "', notification='" + checkStatus + "', date='"+ date +"', time='"+ time +"' WHERE id=" + lastId;
                 command.Connection = m_dbConnection;
                 command.ExecuteNonQuery();
 
@@ -171,7 +194,7 @@ namespace fNote
         private void deleteElement_Click(object sender, EventArgs e)
         {
             checkSelect = baseElements.SelectedIndex;
-            if (checkSelect > 0)
+            if (checkSelect >= 0)
             {
                 SQLiteCommand command = new SQLiteCommand();
                 command.CommandText = "DELETE FROM notes WHERE id=" + ds.Tables[0].Rows[baseElements.SelectedIndex].Field<long>("id");

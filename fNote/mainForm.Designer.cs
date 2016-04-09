@@ -41,9 +41,9 @@
             this.filter = new System.Windows.Forms.Label();
             this.openBase = new System.Windows.Forms.OpenFileDialog();
             this.label1 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.notificationLabel = new System.Windows.Forms.Label();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.reminderActivator = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // baseSelect
@@ -157,12 +157,12 @@
             this.label1.TabIndex = 15;
             this.label1.Text = "Список записей:";
             // 
-            // dateTimePicker1
+            // dateTimePicker
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(120, 338);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 16;
+            this.dateTimePicker.Location = new System.Drawing.Point(120, 338);
+            this.dateTimePicker.Name = "dateTimePicker";
+            this.dateTimePicker.Size = new System.Drawing.Size(200, 20);
+            this.dateTimePicker.TabIndex = 16;
             // 
             // notificationLabel
             // 
@@ -173,23 +173,23 @@
             this.notificationLabel.TabIndex = 17;
             this.notificationLabel.Text = "Напоминание:";
             // 
-            // checkBox1
+            // reminderActivator
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(99, 340);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(15, 14);
-            this.checkBox1.TabIndex = 18;
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.reminderActivator.AutoSize = true;
+            this.reminderActivator.Location = new System.Drawing.Point(99, 340);
+            this.reminderActivator.Name = "reminderActivator";
+            this.reminderActivator.Size = new System.Drawing.Size(15, 14);
+            this.reminderActivator.TabIndex = 18;
+            this.reminderActivator.UseVisualStyleBackColor = true;
             // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(791, 370);
-            this.Controls.Add(this.checkBox1);
+            this.Controls.Add(this.reminderActivator);
             this.Controls.Add(this.notificationLabel);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.dateTimePicker);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.filter);
             this.Controls.Add(this.filterBox);
@@ -225,9 +225,9 @@
         private System.Windows.Forms.Label filter;
         private System.Windows.Forms.OpenFileDialog openBase;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label notificationLabel;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox reminderActivator;
     }
 }
 
