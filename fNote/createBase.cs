@@ -74,7 +74,7 @@ namespace fNote
             baseName.Text = "";
         }
 
-        private void create_Click(object sender, EventArgs e)
+        public void create_Click(object sender, EventArgs e)
         {
             //bool databaseExists = System.IO.File.Exists("bases\\" + baseName.Text + ".db");
             if (regex.IsMatch(baseName.Text, 0) == true)
@@ -93,21 +93,28 @@ namespace fNote
             {
                 filename = "bases\\" + baseName.Text + ".db";            
                 m_dbConnection = new SQLiteConnection("Data Source=" + filename + "; Version=3;");
-                m_dbConnection.Open();                
-                string sql3 = "CREATE TABLE notes (id integer primary key, name varchar(30), note varchar(1000))";
+                m_dbConnection.Open();
+                string sql3 = "CREATE TABLE notes (id integer primary key, name varchar(30), note varchar(1000), notification int, date varchar(10), time varchar(5))";
                 SQLiteCommand command3 = new SQLiteCommand(sql3, m_dbConnection);
                 command3.ExecuteNonQuery();
 
-                string sql4 = "INSERT INTO notes (id, name, note) VALUES (NULL, 'Имя', 'Пример заметки')";
+                string sql4 = "INSERT INTO notes (id, name, note, notification, date, time) VALUES (NULL, 'Имя', 'Пример заметки', 0, '01-01-1970', '00:00')";
                 SQLiteCommand command4 = new SQLiteCommand(sql4, m_dbConnection);
                 command4.ExecuteNonQuery();            
                 DialogResult dialogResult = MessageBox.Show("Выбрать эту базу?", "", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
+                    if (mainForm.connectionOpened == true)
+                    {
+                        mainForm.m_dbConnection.Close();
+                        System.Data.SQLite.SQLiteConnection.ClearAllPools();
+                        GC.Collect();
+                    }
                     mainForm.m_dbConnection = new SQLiteConnection("Data Source=" + filename + "; Version=3;");
                     mainForm.m_dbConnection.Open();
                     mainForm.refresh();
                     ConfigurationManager.AppSettings["lastBase"] = filename;
+                    mainForm.connectionOpened = true;
                 }
 
                 Close();
