@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.baseSelect = new System.Windows.Forms.Button();
             this.baseCreate = new System.Windows.Forms.Button();
             this.bENote = new System.Windows.Forms.TextBox();
@@ -44,6 +45,8 @@
             this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.notificationLabel = new System.Windows.Forms.Label();
             this.reminderActivator = new System.Windows.Forms.CheckBox();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // baseSelect
@@ -182,6 +185,17 @@
             this.reminderActivator.TabIndex = 18;
             this.reminderActivator.UseVisualStyleBackColor = true;
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // notifyIcon
+            // 
+            this.notifyIcon.Text = "notifyIcon";
+            this.notifyIcon.Visible = true;
+            this.notifyIcon.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.notifyIcon_MouseDoubleClick);
+            // 
             // mainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -205,6 +219,7 @@
             this.Name = "mainForm";
             this.Text = "fNote";
             this.Load += new System.EventHandler(this.mainForm_Load);
+            this.Resize += new System.EventHandler(this.mainForm_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -228,6 +243,8 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker;
         private System.Windows.Forms.Label notificationLabel;
         private System.Windows.Forms.CheckBox reminderActivator;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 

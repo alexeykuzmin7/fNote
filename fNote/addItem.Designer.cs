@@ -32,6 +32,8 @@
             this.bEName = new System.Windows.Forms.TextBox();
             this.bENote = new System.Windows.Forms.TextBox();
             this.saveButton = new System.Windows.Forms.Button();
+            this.reminderActivator = new System.Windows.Forms.CheckBox();
+            this.dateTimePicker = new System.Windows.Forms.DateTimePicker();
             this.SuspendLayout();
             // 
             // bEId
@@ -56,11 +58,10 @@
             this.bENote.Name = "bENote";
             this.bENote.Size = new System.Drawing.Size(256, 188);
             this.bENote.TabIndex = 2;
-            //this.bENote.TextChanged += new System.EventHandler(this.bENote_TextChanged);
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(104, 227);
+            this.saveButton.Location = new System.Drawing.Point(107, 257);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 3;
@@ -68,11 +69,30 @@
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
+            // reminderActivator
+            // 
+            this.reminderActivator.AutoSize = true;
+            this.reminderActivator.Location = new System.Drawing.Point(16, 234);
+            this.reminderActivator.Name = "reminderActivator";
+            this.reminderActivator.Size = new System.Drawing.Size(96, 17);
+            this.reminderActivator.TabIndex = 4;
+            this.reminderActivator.Text = "Напоминание";
+            this.reminderActivator.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePicker
+            // 
+            this.dateTimePicker.Location = new System.Drawing.Point(136, 234);
+            this.dateTimePicker.Name = "dateTimePicker";
+            this.dateTimePicker.Size = new System.Drawing.Size(136, 20);
+            this.dateTimePicker.TabIndex = 5;
+            // 
             // addItem
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 262);
+            this.ClientSize = new System.Drawing.Size(284, 289);
+            this.Controls.Add(this.dateTimePicker);
+            this.Controls.Add(this.reminderActivator);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.bENote);
             this.Controls.Add(this.bEName);
@@ -90,5 +110,7 @@
         private System.Windows.Forms.TextBox bEName;
         private System.Windows.Forms.TextBox bENote;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.CheckBox reminderActivator;
+        private System.Windows.Forms.DateTimePicker dateTimePicker;
     }
 }
