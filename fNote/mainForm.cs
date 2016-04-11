@@ -17,8 +17,8 @@ namespace fNote
 { 
     public partial class mainForm: Form
     {
-        //string baseName = "mybase";
         DataSet ds;
+        DataTable dt;
         public SQLiteConnection m_dbConnection;
         bool textDirty = false;
         long lastId = -1;
@@ -30,6 +30,7 @@ namespace fNote
         int checkStatus = 0;
         string date = "";
         string time = "";
+        DateTime theMoment;
         
         public mainForm()
         {
@@ -42,10 +43,6 @@ namespace fNote
         {
             new createBase(this).Show();
         }
-        //public bool IsDirectoryEmpty(string path)
-        //{
-        //    return !Directory.EnumerateFileSystemEntries(path).Any();
-        //}
 
         private void mainForm_Load(object sender, EventArgs e)
         {
@@ -55,31 +52,6 @@ namespace fNote
                 new createBase(this).Show();
                 ConfigurationManager.AppSettings["firstLaunch"] = "false";
             }
-            //try
-            //{
-            //    string filename = "E:\\_Programing\\Projects\\fNote\\fNote\\bin\\Debug\\bases\\" + baseName + ".db";
-            //    bool databaseExists = System.IO.File.Exists(filename);
-            //    m_dbConnection = new SQLiteConnection("Data Source=" + filename + "; Version=3;");
-            //    m_dbConnection.Open();
-
-            //    if (!databaseExists)
-            //    {
-            //        string sql3 = "CREATE TABLE notes (id integer primary key, name varchar(30), note varchar(1000))";
-            //        SQLiteCommand command3 = new SQLiteCommand(sql3, m_dbConnection);
-            //        command3.ExecuteNonQuery();
-
-            //        string sql4 = "INSERT INTO notes (id, name, note) VALUES (NULL, 'a', 'abc'), (NULL, 'b', 'abcd')";
-            //        SQLiteCommand command4 = new SQLiteCommand(sql4, m_dbConnection);
-            //        command4.ExecuteNonQuery();
-            //    }
-
-                
-
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show("Error" + ex);
-            //}
             refresh();
         }
 
@@ -123,6 +95,8 @@ namespace fNote
                     {
                         reminderActivator.Checked = false;
                     }
+                    dateTimePicker.Value = DateTime.Parse(ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("date")+ " " + ds.Tables[0].Rows[baseElements.SelectedIndex].Field<string>("time"));
+                    //theMoment = dateTimePicker.Value;
                 }
                 textDirty = false;
             }
@@ -148,20 +122,18 @@ namespace fNote
             }
             else if (bEName.Text != "" && bENote.Text != "")
             {
+                date = dateTimePicker.Value.Day.ToString() + "-" + dateTimePicker.Value.Month.ToString() + "-" + dateTimePicker.Value.Year.ToString();
+                time = dateTimePicker.Value.Hour.ToString() + ":" + dateTimePicker.Value.Minute.ToString();
                 if(reminderActivator.Checked == true)
                 {
                     checkStatus = 1;
-                    date = dateTimePicker.Value.Day.ToString() + "-" + dateTimePicker.Value.Month.ToString() + "-" + dateTimePicker.Value.Year.ToString();
-                    time = dateTimePicker.Value.Hour.ToString() + ":" + dateTimePicker.Value.Minute.ToString();
                 }
                 else
                 {
                     checkStatus = 0;
-                    date = dateTimePicker.Value.Day.ToString() + "-" + dateTimePicker.Value.Month.ToString() + "-" + dateTimePicker.Value.Year.ToString();
-                    time = dateTimePicker.Value.Hour.ToString() + ":" + dateTimePicker.Value.Minute.ToString();
                 }
                 SQLiteCommand command = new SQLiteCommand();
-                command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "', notification='" + checkStatus + "', date='"+ date +"', time='"+ time +"' WHERE id=" + lastId;
+                command.CommandText = "UPDATE notes SET name='" + bEName.Text + "', note='" + bENote.Text + "', notification='" + checkStatus + "', date='" + date + "', time='" + time + "' WHERE id=" + lastId;
                 command.Connection = m_dbConnection;
                 command.ExecuteNonQuery();
 
@@ -231,7 +203,6 @@ namespace fNote
                     GC.Collect();
                 }
                 sr = new System.IO.StreamReader(openBase.FileName);
-                //MessageBox.Show(sr.ReadToEnd());
                 sr.Close();
                 m_dbConnection = new SQLiteConnection("Data Source=" + openBase.FileName + "; Version=3;");
                 m_dbConnection.Open();
@@ -239,6 +210,63 @@ namespace fNote
                 ConfigurationManager.AppSettings["lastBase"] = openBase.FileName;
                 connectionOpened = true;
             }
+        }
+
+        public void timer_Tick(object sender, EventArgs e)
+        {
+            if (connectionOpened == true)
+            {
+                dt = new DataTable();
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter("SELECT id, name, notification, date, time FROM notes WHERE notification=1", m_dbConnection);
+                adapter.Fill(dt);
+                adapter.Dispose();
+                if (baseElements.SelectedIndex > -1)
+                {
+                    foreach (DataRow dr in dt.Rows)
+                    {
+                        theMoment = DateTime.Parse(dr["date"].ToString() + " " + dr["time"].ToString());
+                        if (DateTime.Now.CompareTo(theMoment) > 0)
+                        {
+                            timer.Enabled = false;
+                            SQLiteCommand command = new SQLiteCommand();
+                            command.CommandText = "UPDATE notes SET notification=0 WHERE id=" + dr["id"];
+                            command.Connection = m_dbConnection;
+                            command.ExecuteNonQuery();
+                            theMoment = DateTime.MaxValue;
+                            DialogResult dialogResult = MessageBox.Show(dr["name"].ToString(), "", MessageBoxButtons.OK);
+                            if (dialogResult == DialogResult.OK)
+                            {
+                                timer.Enabled = true;
+                            }
+                            refresh();
+                        }
+                    }
+                }
+            }
+        }
+
+        private void mainForm_Resize(object sender, EventArgs e)
+        {
+            notifyIcon.BalloonTipTitle = "Minimize to Tray App";
+            notifyIcon.BalloonTipText = "You have successfully minimized your form.";
+
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.ShowInTaskbar = false;
+                notifyIcon.Visible = true;
+                notifyIcon.ShowBalloonTip(500);
+                this.Hide();
+            }
+            else if (this.WindowState == FormWindowState.Normal)
+            {
+                notifyIcon.Visible = false;
+            }
+        }
+
+        private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
         }
     }
 }

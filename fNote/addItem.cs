@@ -20,11 +20,15 @@ namespace fNote
         
 
         private mainForm mainForm;
-        //SQLiteConnection m_dbConnection;
+        int checkStatus = 0;
+        string date = "";
+        string time = "";
         public addItem(mainForm mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
+            dateTimePicker.Format = DateTimePickerFormat.Custom;
+            dateTimePicker.CustomFormat = "dd/MM/yyyy HH:mm";
         }
 
         public void saveButton_Click(object sender, EventArgs e)
@@ -43,12 +47,17 @@ namespace fNote
             }
             else
             {
-                //string baseName = "mybase";
-                //string filename = "bases\\" + baseName + ".db";
-                
-                //m_dbConnection = new SQLiteConnection("Data Source=" + ConfigurationManager.AppSettings["lastBase"] + "; Version=3;");
-                //m_dbConnection.Open();
-                string sql = "INSERT INTO notes (id, name, note) VALUES (NULL, " + bEName.Text + ", " + bENote.Text + ")";
+                date = dateTimePicker.Value.Day.ToString() + "-" + dateTimePicker.Value.Month.ToString() + "-" + dateTimePicker.Value.Year.ToString();
+                time = dateTimePicker.Value.Hour.ToString() + ":" + dateTimePicker.Value.Minute.ToString();
+                if (reminderActivator.Checked == true)
+                {
+                    checkStatus = 1;
+                }
+                else
+                {
+                    checkStatus = 0;
+                }
+                string sql = "INSERT INTO notes (id, name, note, notification, date, time) VALUES (NULL, " + bEName.Text + ", " + bENote.Text + ", '" + checkStatus + "', '" + date + "', '" + time + "')";
                 SQLiteCommand command = new SQLiteCommand(sql, mainForm.m_dbConnection);
                 command.ExecuteNonQuery();
                 mainForm.refresh();

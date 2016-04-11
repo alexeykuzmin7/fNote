@@ -27,47 +27,6 @@ namespace fNote
             InitializeComponent();
             this.mainForm = mainForm;
         }
-        
-        //private bool legalName(string filename)
-        //{
-        //    if (!string.IsNullOrEmpty(filename))
-        //    {
-        //        try
-        //        {
-        //            // Careful!
-        //            //    Path.GetDirectoryName("C:\Directory\SubDirectory")
-        //            //    returns "C:\Directory", which may not be what you want in
-        //            //    this case. You may need to explicitly add a trailing \
-        //            //    if path is a directory and not a file path. As written, 
-        //            //    this function just assumes path is a file path.
-        //            string fileName = System.IO.Path.GetFileName(filename);
-        //            string fileDirectory = System.IO.Path.GetDirectoryName(filename);
-
-        //            // we don't need to do anything else,
-        //            // if we got here without throwing an 
-        //            // exception, then the path does not
-        //            // contain invalid characters
-        //        }
-        //        catch (ArgumentException)
-        //        {
-        //            // Path functions will throw this 
-        //            // if path contains invalid chars
-        //            return false;
-        //        }
-        //    }
-        //    return true;
-        //    //bool validName = true;
-            
-        //    //if (regex.IsMatch(filename, 0) == false) validName = false;
-        //    //if (!validName)
-        //    //{
-        //    //    return false;
-        //    //}
-        //    //else
-        //    //{
-        //    //    return true;
-        //    //}
-        //}
 
         private void baseName_Click(object sender, EventArgs e)
         {
@@ -76,7 +35,6 @@ namespace fNote
 
         public void create_Click(object sender, EventArgs e)
         {
-            //bool databaseExists = System.IO.File.Exists("bases\\" + baseName.Text + ".db");
             if (regex.IsMatch(baseName.Text, 0) == true)
             {
                 MessageBox.Show("Название должно быть без спец-символов");
@@ -119,22 +77,6 @@ namespace fNote
 
                 Close();
             }
-
-            //refresh();
-            //System.IO.Directory.CreateDirectory("bases");
-            //if (baseName.Text == "")
-            //{
-            //    MessageBox.Show("Название базы не может быть пустым");
-            //}
-            //else if (!System.IO.File.Exists("bases\\" + baseName.Text + ".sqlite"))
-            //{
-            //    SQLiteConnection.CreateFile("bases\\" + baseName.Text + ".sqlite");
-            //}
-            //else
-            //{
-            //    MessageBox.Show("База с таким названием уже ссуществует");
-            //}
-            //MessageBox.Show(legalName(baseName.Text).ToString());
         }
     }
 }
